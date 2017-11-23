@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+	<constant name="struts.devMode" value="false"></constant>
+	<package name="demo2" extends="struts-default" namespace="/">
+	<!-- class不写Acton全路径 ，不然对象会创建两次 。只需要写Spring配置文件中的bean的id值，
+	必须要引入一个jar包 -->
+		<!-- 首页访问的action -->
+		<action name="index" class="indexAction">
+			<result name="index">/WEB-INF/jsp/index2.jsp</result>
+		</action>
+		
+		<!-- 配置用户模块的action -->
+		<action name="user_*" class="userAction" method="{1}">
+			<result name="registPage">/WEB-INF/jsp/account.jsp</result>
+			<result name="loginPage">/WEB-INF/jsp/account.jsp</result>
+			<result name="input">/WEB-INF/jsp/account.jsp</result>
+			<result name="login">/WEB-INF/jsp/account.jsp</result>
+			<result name="msg">/WEB-INF/jsp/msg.jsp</result>
+			<result name="loginSuccess" type="redirectAction">index</result>
+			<result name="loginOut" type="redirectAction">index</result>
+		</action>
+	</package>
+	
+</struts>
+
+
+

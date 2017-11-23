@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans-4.3.xsd
+	http://www.springframework.org/schema/context
+	http://www.springframework.org/schema/context/spring-context.xsd
+	http://www.springframework.org/schema/aop
+	http://www.springframework.org/schema/aop/spring-aop.xsd
+	http://www.springframework.org/schema/tx
+	http://www.springframework.org/schema/tx/spring-tx.xsd">
+	
+	<!-- 开启注解扫描 -->
+	<context:component-scan base-package="com"></context:component-scan>
+  	<!-- c3p0连接池的配置
+		<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+			<property name="driverClass" value="com.mysql.jdbc.Driver"></property>
+			<property name="jdbcUrl" value="jdbc:mysql://ninenine.xin:3306/web_ssh"></property>
+			<property name="user" value="root"></property>
+			<property name="password" value="Ch1065670082."></property>
+		</bean>	
+	-->		
+  	 <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+            <property name="driverClass" value="com.mysql.jdbc.Driver"></property>
+            <property name="jdbcUrl" value="jdbc:mysql://127.0.0.1:3306/dayi"></property>
+            <property name="user" value="root"></property>
+            <property name="password" value="abcd1234"></property>
+        </bean> 
+	 	 <!-- 配置action的创建  多实例-->
+	  	<bean id="indexAction" class="ch.shop.index.action.InedxAction" scope="prototype">
+	  		<property name="categoryService" ref="categoryService"></property>
+	  		<property name="productService" ref="productService"></property>
+	  	</bean>
+	  	
+	  	<!-- 用户模块的action -->
+	  	<bean id="userAction" class="ch.shop.user.action.UserAction" scope="prototype">
+	  		<!-- 注入service -->
+	  		<property name="userService" ref="userService"></property>
+	  		<property name="vc" ref="vc"></property>
+	  	</bean>
+	  	<bean id="productAction" class="ch.shop.product.action.ProductAction" scope="prototype">
+	  		<property name="productService" ref="productService"></property>
+	  	</bean>
+	  	
+  		<!-- service 对象 -->
+		<bean id="userService" class="ch.shop.user.service.UserService" >
+			<!-- 注入dao -->
+			<property name="userDao" ref="userDao"></property>
+		</bean>
+		<bean id="categoryService" class="ch.shop.category.service.CategoryService">
+			<property name="categoryDao" ref="categoryDao"></property>
+		</bean>
+		<bean id="productService" class="ch.shop.product.service.ProductService">
+			<property name="productDao" ref="productDao"></property>
+		</bean>
+		
+		<!-- dao实现类的对象 -->
+		<bean id="userDao" class="ch.shop.user.dao.UserDao">
+			<property name="sessionFactory" ref="sessionFactory"></property>
+		</bean>
+		<bean id="categoryDao" class="ch.shop.category.dao.CategoryDao">
+			<property name="sessionFactory" ref="sessionFactory"></property>
+		</bean>
+		<bean id="productDao" class="ch.shop.product.dao.ProductDao">
+			<property name="sessionFactory" ref="sessionFactory"></property>
+		</bean>
+		
+		
+		
+		<!-- 工具类对象 -->
+		<bean id = "vc" class="ch.shop.user.utils.VerifyCode"></bean>
+  
+  
+  
+	  <!-- 吧hibernate的sessionFactory也交给Spring处理 -->
+	  	<bean id="sessionFactory" class=" org.springframework.orm.hibernate5.LocalSessionFactoryBean">
+	  		<!-- 因为hibernate的核心文件中没有数据库的配置了，所以要注入datasource -->
+	  		<property name="dataSource" ref="dataSource"></property>
+	  		<!-- 指定hibernate的核心配置文件  -->
+	  		<property name="configLocations" value="classpath:hibernate.cfg.xml"></property>
+	  	</bean>
+	  	<!-- 创建hibernatetemplate的对象 -->
+	  	<bean id="hibernateTemplate" class="org.springframework.orm.hibernate5.HibernateTemplate">
+	  		<!-- 注入sessionFactory -->
+	  		<property name="sessionFactory" ref="sessionFactory"></property>
+	  	</bean>
+  	
+  	
+  	
+  		
+		
+		
+		<!-- ===事务的注解1.配置事务管理器使用hibernate中的事务扫描================================ -->
+		<bean id="transactionManager" class="org.springframework.orm.hibernate5.HibernateTransactionManager">
+			<!-- 注入sessionFactory或者datasource，一般注入sessionFactory因为里面包含dataSource -->
+			<property name="sessionFactory" ref="sessionFactory"></property>
+		</bean>
+
+		<!-- 2.开启事务的扫描 -->
+		<tx:annotation-driven transaction-manager="transactionManager"/>
+	
+</beans>

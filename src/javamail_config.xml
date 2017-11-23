@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<!--
+ 大体上就是这个，每个config节点只能有一个user跟一个password
+ 但可以有多个poroperties节点
+ -->
+<javamail-config>
+    <!-- 默认配置，当使用无参构造器的时候，使用这个配置 -->
+    <default-config>
+        <!-- 邮箱的帐号与密码 -->
+        <user>1065670082@qq.com</user>
+        <password>ohlljytlijbubcfi</password>
+        <!-- properties里面的信息，key是对应的里面的键，文本对应里面的值 -->
+        <properties key="mail.host">smtp.qq.com</properties>
+        <properties key="mail.smtp.auth">true</properties>
+    </default-config>
+
+    <!-- 命名配置，在构造器里面可以传递name这个属性值-->
+</javamail-config>

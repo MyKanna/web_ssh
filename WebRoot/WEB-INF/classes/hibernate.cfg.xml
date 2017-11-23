@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC
+	"-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+	"http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+	
+<hibernate-configuration>
+<session-factory>
+	<!-- 第一步 配置数据库信息 -->
+	<!--
+		property文件中
+		#hibernate.dialect org.hibernate.dialect.MySQLDialect
+		#hibernate.dialect org.hibernate.dialect.MySQLInnoDBDialect
+		#hibernate.dialect org.hibernate.dialect.MySQLMyISAMDialect
+		#hibernate.connection.driver_class com.mysql.jdbc.Driver
+		#hibernate.connection.url jdbc:mysql:///test
+		#hibernate.connection.username gavin
+		#hibernate.connection.password
+	-->
+
+	<!-- 
+		<property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
+		<property name="hibernate.connection.url">jdbc:mysql://ninenine.xin:3306/Spring_day04</property>
+		<property name="hibernate.connection.username">root</property>
+		<property name="hibernate.connection.password">Ch1065670082.</property>
+	-->
+
+
+	<!-- 第二部分 配置hibernate 信息(可选) -->
+	<!-- 输出底层sql语句 -->
+	<property name="hibernate.show_sql">true</property>
+	<!-- 输出底层sql语句 格式-->
+	<property name="hibernate.format_sql">true</property>
+	<!-- hibernate 自动更新表 -->
+	<property name="hibernate.hbm2ddl.auto">update</property>
+	<!-- 数据库方言 -->
+	<property name="hibernate.dialect">
+		org.hibernate.dialect.MySQLDialect
+	</property>
+
+	<!-- 第三部分 把映射文件放到核心配置文件中 -->
+	<property name="dialect">org.hibernate.dialect.DerbyDialect</property>
+	<mapping resource="ch/shop/user/vo/User.hbm.xml" />
+	<mapping resource="ch/shop/category/vo/Category.hbm.xml" />
+	<mapping resource="ch/shop/product/vo/Product.hbm.xml" />
+
+</session-factory>
+</hibernate-configuration>
